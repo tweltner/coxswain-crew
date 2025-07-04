@@ -9,7 +9,7 @@ import {
 import { MenuComponent } from './menu/menu.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'cwc-root',
   imports: [
     IonMenu,
     IonContent,

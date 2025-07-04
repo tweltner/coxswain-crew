@@ -12,7 +12,7 @@ import {
 } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-header',
+  selector: 'cwc-header',
   imports: [
     IonToolbar,
     IonHeader,

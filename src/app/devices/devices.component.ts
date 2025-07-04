@@ -21,17 +21,16 @@ import {
 } from './pirowflo/pirowflo-ble-services';
 
 @Component({
-  selector: 'app-devices',
+  selector: 'cwc-devices',
   imports: [IonSpinner, IonButton, IonList, IonItem, IonLabel],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevicesComponent {
+  private bleService = inject(BluetoothService);
   private injector = inject(Injector);
   private deviceId = '';
-
-  constructor(private bleService: BluetoothService) {}
 
   scanActive = toSignal(this.bleService.isScanActive(), {
     injector: this.injector,

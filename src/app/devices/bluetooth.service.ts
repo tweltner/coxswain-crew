@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BleClient, BleDevice } from '@capacitor-community/bluetooth-le';
-import { BehaviorSubject, firstValueFrom, from } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

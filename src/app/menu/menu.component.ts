@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonHeader,
@@ -14,7 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-menu',
+  selector: 'cwc-menu',
   imports: [
     IonHeader,
     IonToolbar,
@@ -32,7 +32,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuComponent {
-  constructor(private menuController: MenuController) {}
+  private menuController = inject(MenuController);
 
-  closeMenu() {}
+  closeMenu() {
+    /* empty */
+  }
 }
