@@ -1,24 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Injector,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Injector, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  IonButton,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonSpinner,
-} from '@ionic/angular/standalone';
+import { IonButton, IonItem, IonLabel, IonList, IonSpinner } from '@ionic/angular/standalone';
 import { BluetoothService } from './bluetooth.service';
 import { BleClient } from '@capacitor-community/bluetooth-le';
-import {
-  FITNESS_MACHINE_ROWER_DATA_CHARACTERISTIC,
-  FITNESS_MACHINE_SERVICE,
-} from './pirowflo/pirowflo-ble-services';
+import { FITNESS_MACHINE_ROWER_DATA_CHARACTERISTIC, FITNESS_MACHINE_SERVICE } from './pirowflo/pirowflo-ble-services';
 
 @Component({
   selector: 'cwc-devices',
@@ -32,23 +17,23 @@ export class DevicesComponent {
   private injector = inject(Injector);
   private deviceId = '';
 
-  scanActive = toSignal(this.bleService.isScanActive(), {
+  readonly scanActive = toSignal(this.bleService.isScanActive(), {
     injector: this.injector,
     initialValue: false,
   });
 
-  devices = toSignal(this.bleService.getDevices(), { injector: this.injector });
-  connected = signal(false);
+  readonly devices = toSignal(this.bleService.getDevices(), { injector: this.injector });
+  readonly connected = signal(false);
 
-  startScanning() {
+  startScanning(): void {
     this.bleService.startScan();
   }
 
-  stopScanning() {
+  stopScanning(): void {
     this.bleService.stopScan();
   }
 
-  async connect(deviceId: string) {
+  async connect(deviceId: string): Promise<void> {
     await this.bleService.connect(deviceId, (id) => this.onDisconnect(id));
     const services = await this.bleService.getServices(deviceId);
 
@@ -63,21 +48,21 @@ export class DevicesComponent {
       FITNESS_MACHINE_ROWER_DATA_CHARACTERISTIC,
       (value) => {
         console.log('current data: ', this.parseRowerData(value));
-      }
+      },
     );
   }
 
-  async disconnect() {
+  async disconnect(): Promise<void> {
     await this.bleService.disconnect(this.deviceId);
     this.deviceId = '';
     this.connected.set(false);
   }
 
-  private onDisconnect(deviceId: string) {
+  private onDisconnect(deviceId: string): void {
     console.log(`device ${deviceId} disconnected.`);
   }
 
-  private parseRowerData(data: DataView) {
+  private parseRowerData(data: DataView): number {
     return data.getUint16(0);
   }
 }

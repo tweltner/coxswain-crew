@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BleClient, BleDevice } from '@capacitor-community/bluetooth-le';
-import { BehaviorSubject } from 'rxjs';
+import { BleClient, BleDevice, BleService } from '@capacitor-community/bluetooth-le';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class BluetoothService {
   /**
    *
    */
-  async initialize() {
+  async initialize(): Promise<void> {
     try {
       await BleClient.initialize({ androidNeverForLocation: false });
 
@@ -31,18 +31,18 @@ export class BluetoothService {
    *
    * @returns
    */
-  getDevices() {
+  getDevices(): Observable<BleDevice[]> {
     return this.devices$.asObservable();
   }
 
-  isScanActive() {
+  isScanActive(): Observable<boolean> {
     return this._scanning$.asObservable();
   }
 
   /**
    *
    */
-  async startScan() {
+  async startScan(): Promise<void> {
     this._scanning$.next(true);
 
     await BleClient.requestLEScan({ allowDuplicates: false }, (result) => {
@@ -65,20 +65,20 @@ export class BluetoothService {
   /**
    *
    */
-  async stopScan() {
+  async stopScan(): Promise<void> {
     this._scanning$.next(false);
     await BleClient.stopLEScan();
   }
 
-  async connect(deviceId: string, onDisconnectFn?: (deviceId: string) => void) {
+  async connect(deviceId: string, onDisconnectFn?: (deviceId: string) => void): Promise<void> {
     await BleClient.connect(deviceId, onDisconnectFn);
   }
 
-  async disconnect(deviceId: string) {
+  async disconnect(deviceId: string): Promise<void> {
     await BleClient.disconnect(deviceId);
   }
 
-  async getServices(deviceId: string) {
+  async getServices(deviceId: string): Promise<BleService[]> {
     return BleClient.getServices(deviceId);
   }
 }

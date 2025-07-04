@@ -34,7 +34,7 @@ import {
 export class MenuComponent {
   private menuController = inject(MenuController);
 
-  closeMenu() {
+  closeMenu(): void {
     /* empty */
   }
 }
