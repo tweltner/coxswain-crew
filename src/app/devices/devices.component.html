@@ -1,0 +1,18 @@
+<div>
+  @if (!scanActive()) {
+  <ion-button (click)="startScanning()">Start Scan</ion-button>
+  } @else {
+  <ion-button (click)="stopScanning()">Stop Scan</ion-button>
+  <ion-spinner></ion-spinner>
+  } @if (connected()) {
+  <ion-button (click)="disconnect()">Disconnect</ion-button>
+  }
+</div>
+
+<ion-list [inset]="true">
+  @for (device of devices(); track device.deviceId) {
+  <ion-item>
+    <ion-label (click)="connect(device.deviceId)">{{ device.name }}</ion-label>
+  </ion-item>
+  }
+</ion-list>
